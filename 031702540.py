@@ -3,6 +3,7 @@ import json
 import requests
 import re
 
+
 class SolveAddress:
     def __init__(self, str):
         self.addr = {"姓名": "", "手机": "", "地址": []}
@@ -186,7 +187,14 @@ class SolveAddress:
             self.addr["地址"][1] = self.flg_1
         elif self.addr["地址"][2] == "":
             self.addr["地址"][2] = self.flg_2
-            
-string = input()
-solve = SolveAddress(string)
-solve.solve()
+
+
+while 1:
+    string = input()
+    if string == "END":
+        break
+    try:
+        solve = SolveAddress(string)
+        solve.solve()
+    except Exception:
+        continue
