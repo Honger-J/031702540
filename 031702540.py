@@ -39,7 +39,7 @@ class SolveAddress:
 
     def sov_Addr_1(self):
         # 省级
-        if re.match("北京|天津|上海|重庆", self.str) != None:  # 直辖市
+        if re.match("北京|天津|上海|重庆", self.str) is not None:  # 直辖市
             s = re.search("北京市|天津市|上海市|重庆市|北京|天津|上海|重庆", self.str)[0]
             self.addr["地址"].append(s[:2])
             # 直辖市部分切割出去
@@ -47,25 +47,28 @@ class SolveAddress:
             if self.str[0] == "市":
                 self.str = self.str[1:]
 
-            url = "https://restapi.amap.com/v3/config/district?key=c80c6911234bd35e6c15fd7b0d0e415a&keywords=" + s + "&subdistrict=3&extensions=base"
+            url = "https://restapi.amap.com/v3/config/district?key=9116cc255aea7f9e40823f0b534ab798&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
 
-        elif re.search("自治区|特别行政区", self.str) != None:
+        elif re.search("自治区|特别行政区", self.str) is not None:
             end = re.search("自治区|特别行政区", self.str).span()[1]
             s = self.str[:end]
             self.addr["地址"].append(s)
             self.str = self.str[end:]  # str省级部分分离出去
 
-            url = "https://restapi.amap.com/v3/config/district?key=c80c6911234bd35e6c15fd7b0d0e415a&keywords=" + s + "&subdistrict=3&extensions=base"
+            url = "https://restapi.amap.com/v3/config/district?key=9116cc255aea7f9e40823f0b534ab798&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
             map = map[0]["districts"]  # 往下移一级
 
         else:  # 有 省 后缀的， 取前两个字匹配
             s = self.str[:2]
-            url = "https://restapi.amap.com/v3/config/district?key=c80c6911234bd35e6c15fd7b0d0e415a&keywords=" + s + "&subdistrict=3&extensions=base"
+            url = "https://restapi.amap.com/v3/config/district?key=9116cc255aea7f9e40823f0b534ab798&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
 
-            ss = map[0]["name"]
+            if s is "海南":
+                ss = map[1]["name"]
+            else:
+                ss = map[0]["name"]
             self.addr["地址"].append(ss)
             map = map[0]["districts"]
             # 删除str省级
@@ -116,12 +119,12 @@ class SolveAddress:
 
         else:
             for i in map:
-                if re.match(s, i["name"]) != None:  # 匹配到
+                if re.match(s, i["name"]) is not None:  # 匹配到
                     self.addr["地址"].append(i["name"])
                     # str切割县级部分
                     self.str = self.str[len(i["name"]):]
                     break
-            if re.match(s, i["name"]) == None:  # 整个县缺失
+            if re.match(s, i["name"]) is None:  # 整个县缺失
                 self.addr["地址"].append("")
             else:
                 map = i["districts"]
@@ -132,11 +135,11 @@ class SolveAddress:
             j = None
             for i in map:
                 for j in i["districts"]:
-                    if re.search(s, j["name"]) != None:
+                    if re.search(s, j["name"]) is not None:
                         self.addr["地址"].append(j["name"])
                         map = j["districts"]
                         break
-                if re.search(s, j["name"]) != None:
+                if re.search(s, j["name"]) is not None:
                     break
             self.str = self.str[len(j["name"]):]
             map = j["districts"]
@@ -144,12 +147,12 @@ class SolveAddress:
 
         else:
             for i in map:
-                if re.match(s, i["name"]) != None:  # 匹配到
+                if re.match(s, i["name"]) is not None:  # 匹配到
                     self.addr["地址"].append(i["name"])
                     # str切割乡级部分
                     self.str = self.str[len(i["name"]):]
                     break
-            if re.match(s, i["name"]) == None:  # 整个乡缺失
+            if re.match(s, i["name"]) is None:  # 整个乡缺失
                 self.addr["地址"].append("")
             map = i["districts"]
 
@@ -160,7 +163,10 @@ class SolveAddress:
         self.sov_Addr_1()
         self.addr["地址"].pop()
         # 第5级---路、街、巷、村、道、区
-        if re.search("路|道|街|巷|村|区", self.str) == None:
+        if re.search("街道",self.str) is not None:
+            end = re.search("街道", self.str).span()[1]
+
+        if re.search("路|道|街|巷|村|区|场", self.str) is None:
             self.addr["地址"].append("")
         else:
             end = re.search("路|道|街|巷|村|区", self.str).span()[1]
@@ -168,7 +174,7 @@ class SolveAddress:
             self.str = self.str[end:]
 
         # 第六级---门牌号
-        if re.search("号", self.str) == None:
+        if re.search("号", self.str) is None:
             self.addr["地址"].append("")
         else:
             end = re.search("号", self.str).span()[1]
@@ -176,7 +182,7 @@ class SolveAddress:
             self.str = self.str[end:]
 
         # 第七级
-        if self.str == None:
+        if self.str is None:
             self.addr["地址"].append("")
         else:
             self.addr["地址"].append(self.str)
