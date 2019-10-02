@@ -88,7 +88,7 @@ class SolveAddress:
         else:  # 一般市，市级末尾可能不是市，市字缺失
             s = self.str[:2]
             for i in map:
-                if re.match(s, i["name"]) != None:
+                if re.match(s, i["name"]) is not None:
                     self.addr["地址"].append(i["name"])  # '市'字缺失不用补
                     # str切割市级部分
                     if i["name"][-1] == "市":
@@ -98,7 +98,7 @@ class SolveAddress:
                     else:
                         self.str = self.str[len(i["name"]):]
                     break
-            if re.match(s, i["name"]) == None:  # 整个市缺失
+            if re.match(s, i["name"]) is None:  # 整个市缺失
                 self.addr["地址"].append("")
             else:
                 map = i["districts"]
@@ -109,11 +109,11 @@ class SolveAddress:
             j = None
             for i in map:
                 for j in i["districts"]:
-                    if re.search(s, j["name"]) != None:
+                    if re.search(s, j["name"]) is not None:
                         self.addr["地址"].append(j["name"])
                         break
                     map = j["districts"]
-                if re.search(s, j["name"]) != None:  # 报错
+                if re.search(s, j["name"]) is not None:  # 报错
                     break
             self.str = self.str[len(j["name"]):]
             map = j["districts"]
