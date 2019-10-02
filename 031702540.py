@@ -195,12 +195,9 @@ class SolveAddress:
             self.addr["地址"][2] = self.flg_2
 
 
-while 1:
     string = input()
-    if string == "END":
-        break
     try:
         solve = SolveAddress(string)
         solve.solve()
     except Exception:
-        continue
+        break
