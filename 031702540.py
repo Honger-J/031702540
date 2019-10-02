@@ -65,12 +65,14 @@ class SolveAddress:
             url = "https://restapi.amap.com/v3/config/district?key=c80c6911234bd35e6c15fd7b0d0e415a&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
 
-            if s is "海南":
+            if s == "海南":
                 ss = map[1]["name"]
+                map = map[1]["districts"]
             else:
                 ss = map[0]["name"]
+                map = map[0]["districts"]
             self.addr["地址"].append(ss)
-            map = map[0]["districts"]
+            
             # 删除str省级
             self.str = self.str[len(ss) - 1:]  # str省级部分分离出去
             if self.str[0] == "省":
@@ -137,7 +139,6 @@ class SolveAddress:
                 for j in i["districts"]:
                     if re.search(s, j["name"]) is not None:
                         self.addr["地址"].append(j["name"])
-                        map = j["districts"]
                         break
                 if re.search(s, j["name"]) is not None:
                     break
