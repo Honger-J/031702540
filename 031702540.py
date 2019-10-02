@@ -47,7 +47,7 @@ class SolveAddress:
             if self.str[0] == "市":
                 self.str = self.str[1:]
 
-            url = "https://restapi.amap.com/v3/config/district?key=72463c15200382a9f058c654cdfe6b30&keywords=" + s + "&subdistrict=3&extensions=base"
+            url = "https://restapi.amap.com/v3/config/district?key=976bf42e53aa322543a19bc83b3bfa58&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
 
         elif re.search("自治区|特别行政区", self.str) is not None:
@@ -56,13 +56,13 @@ class SolveAddress:
             self.addr["地址"].append(s)
             self.str = self.str[end:]  # str省级部分分离出去
 
-            url = "https://restapi.amap.com/v3/config/district?key=145f700ece4b673fa1beb36aa92015e1&keywords=" + s + "&subdistrict=3&extensions=base"
+            url = "https://restapi.amap.com/v3/config/district?key=87e371ec39411a0e1c361249bd2f1890&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
             map = map[0]["districts"]  # 往下移一级
 
         else:  # 有 省 后缀的， 取前两个字匹配
             s = self.str[:2]
-            url = "https://restapi.amap.com/v3/config/district?key=c80c6911234bd35e6c15fd7b0d0e415a&keywords=" + s + "&subdistrict=3&extensions=base"
+            url = "https://restapi.amap.com/v3/config/district?key=cf269e9be3148f099971d7c1f2763305&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
 
             if s == "海南":
