@@ -110,7 +110,6 @@ class SolveAddress:
                     if re.search(s, j["name"]) != None:
                         self.addr["地址"].append(j["name"])
                         break
-                    map = j["districts"]
                 if re.search(s, j["name"]) != None:  # 报错
                     break
             self.str = self.str[len(j["name"]):]
