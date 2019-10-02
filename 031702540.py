@@ -195,9 +195,8 @@ class SolveAddress:
             self.addr["地址"][2] = self.flg_2
 
 
-    string = input()
-    try:
-        solve = SolveAddress(string)
-        solve.solve()
-    except Exception:
-        break
+string = input()
+  
+solve = SolveAddress(string)
+solve.solve()
+  
