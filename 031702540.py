@@ -56,13 +56,13 @@ class SolveAddress:
             self.addr["地址"].append(s)
             self.str = self.str[end:]  # str省级部分分离出去
 
-            url = "https://restapi.amap.com/v3/config/district?key=72463c15200382a9f058c654cdfe6b30&keywords=" + s + "&subdistrict=3&extensions=base"
+            url = "https://restapi.amap.com/v3/config/district?key=c80c6911234bd35e6c15fd7b0d0e415a&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
             map = map[0]["districts"]  # 往下移一级
 
         else:  # 有 省 后缀的， 取前两个字匹配
             s = self.str[:2]
-            url = "https://restapi.amap.com/v3/config/district?key=72463c15200382a9f058c654cdfe6b30&keywords=" + s + "&subdistrict=3&extensions=base"
+            url = "https://restapi.amap.com/v3/config/district?key=145f700ece4b673fa1beb36aa92015e1&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
 
             if s is "海南":
