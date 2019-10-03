@@ -65,7 +65,7 @@ class SolveAddress:
             url = "https://restapi.amap.com/v3/config/district?key=cf269e9be3148f099971d7c1f2763305&keywords=" + s + "&subdistrict=3&extensions=base"
             map = requests.get(url).json()["districts"]  # 高德API
 
-            if s == "海南":
+            if s == "海南" or s == "河北":
                 ss = map[1]["name"]
                 map = map[1]["districts"]
             else:
